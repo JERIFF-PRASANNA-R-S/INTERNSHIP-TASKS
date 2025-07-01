@@ -1,63 +1,72 @@
-def add_contact():
-    name = input("Enter contact name: ")
-    phone = input("Enter phone number: ")
-    email = input("Enter email: ")
-    address = input("Enter address: ")
-    
-    # Store contact information in a dictionary and add it to the list
-    contact = {"name": name, "phone": phone, "email": email, "address": address}
-    contacts.append(contact)
-    print(f"Contact for {name} added successfully.\n")
+class ContactBook:
+    def __init__(self):
+        self.contacts = {}
 
-# Function to view all contacts
-def view_contacts():
-    if len(contacts) == 0:
-        print("No contacts found.\n")
-    else:
-        print("\nContact List:")
-        for contact in contacts:
-            print(f"Name: {contact['name']}")
-            print(f"Phone: {contact['phone']}")
-            print(f"Email: {contact['email']}")
-            print(f"Address: {contact['address']}\n")
+    def add_contact(self, name, phone, email):
+        """Add a new contact to the contact book."""
+        self.contacts[name] = {'phone': phone, 'email': email}
+        print(f"Contact for {name} added successfully.")
 
-# Function to search a contact
-def search_contact():
-    search_term = input("Enter name or phone to search: ")
-    found = False
-    for contact in contacts:
-        if search_term.lower() in contact['name'].lower() or search_term in contact['phone']:
-            print(f"\nFound: {contact['name']}")
-            print(f"Phone: {contact['phone']}")
-            print(f"Email: {contact['email']}")
-            print(f"Address: {contact['address']}\n")
-            found = True
-    if not found:
-        print("No contact found.\n")
+    def view_contacts(self):
+        """View all contacts in the contact book."""
+        if not self.contacts:
+            print("No contacts available.")
+        else:
+            for name, details in self.contacts.items():
+                print(f"Name: {name}, Phone: {details['phone']}, Email: {details['email']}")
 
-# Main menu
+    def search_contact(self, name):
+        """Search for a contact by name."""
+        if name in self.contacts:
+            contact = self.contacts[name]
+            print(f"Found Contact - Name: {name}, Phone: {contact['phone']}, Email: {contact['email']}")
+        else:
+            print(f"No contact found with the name {name}.")
+
+    def delete_contact(self, name):
+        """Delete a contact by name."""
+        if name in self.contacts:
+            del self.contacts[name]
+            print(f"Contact for {name} deleted successfully.")
+        else:
+            print(f"No contact found with the name {name}.")
+
 def main():
+    contact_book = ContactBook()
+
     while True:
-        print("Contact Book Menu")
+        print("\nContact Book Menu:")
         print("1. Add Contact")
         print("2. View Contacts")
         print("3. Search Contact")
-        print("4. Exit")
-        
-        choice = input("Enter your choice: ")
+        print("4. Delete Contact")
+        print("5. Exit")
 
-        if choice == "1":
-            add_contact()
-        elif choice == "2":
-            view_contacts()
-        elif choice == "3":
-            search_contact()
-        elif choice == "4":
-            print("Exiting Contact Book.")
+        choice = input("Enter your choice (1-5): ")
+
+        if choice == '1':
+            name = input("Enter contact name: ")
+            phone = input("Enter phone number: ")
+            email = input("Enter email address: ")
+            contact_book.add_contact(name, phone, email)
+
+        elif choice == '2':
+            contact_book.view_contacts()
+
+        elif choice == '3':
+            name = input("Enter the name to search: ")
+            contact_book.search_contact(name)
+
+        elif choice == '4':
+            name = input("Enter the name to delete: ")
+            contact_book.delete_contact(name)
+
+        elif choice == '5':
+            print("Exiting Contact Book...")
             break
-        else:
-            print("Invalid choice. Please try again.\n")
 
-# Run the program
-if _name_ == "_main_":
+        else:
+            print("Invalid choice. Please choose a valid option.")
+
+if __name__ == "__main__":
     main()
